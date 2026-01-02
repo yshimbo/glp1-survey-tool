@@ -21,22 +21,25 @@ GLP-1関連のダイエット・医薬品トレンドを自動収集・分析す
 # サーベイ実行
 %run glp1_survey.py
 results = run_survey()
+```
+### コマンド
 
-## コマンド
-### 基本実行
+```python
+# 基本実行
 results = run_survey()
 
-### Markdown形式で出力
+# Markdown形式で出力
 results = run_survey(output_format='markdown')
 
-### 特定薬剤の検索
+# 特定薬剤の検索
 search_specific_drug('semaglutide')
 
-### Drug Shortage確認
+# Drug Shortage確認
 check_drug_shortage('liraglutide')
 
-### 前回の差分情報を表示
+# 前回の差分情報を表示
 show_last_diff()
+```
 
 ## ファイル構成
 glp1_config.json - 設定ファイル（検索キーワード、ソースURL等）
