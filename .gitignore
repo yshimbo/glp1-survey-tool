@@ -1,0 +1,11 @@
+# 出力ファイル
+survey_output/ *.html *.md !README.md
+
+#スナップショット・キャッシュ
+last_snapshot.json seen_urls.json
+
+#Python
+pycache/ *.pyc *.pyo .ipynb_checkpoints/
+
+#OS
+.DS_Store Thumbs.db 

@@ -1,0 +1,461 @@
+{
+  "general": {
+    "output_dir": "/content/survey_output",
+    "seen_urls_file": "seen_urls.json",
+    "snapshot_file": "last_snapshot.json",
+    "request_timeout": 30,
+    "request_delay": 1.0,
+    "max_articles_per_source": 50,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  },
+  "fda_api": {
+    "base_url": "https://api.fda.gov",
+    "endpoints": {
+      "drugs_fda": "/drug/drugsfda.json",
+      "drug_label": "/drug/label.json",
+      "drug_event": "/drug/event.json"
+    },
+    "default_limit": 100,
+    "search_days": 90
+  },
+  "search_terms": {
+    "indications": {
+      "obesity": {
+        "aliases": ["obesity", "obese", "overweight", "weight loss", "weight management", "weight reduction", "anti-obesity", "bariatric", "肥満", "肥満症", "体重減少", "体重管理", "減量", "ダイエット"]
+      },
+      "type_2_diabetes": {
+        "aliases": ["type 2 diabetes", "type ii diabetes", "t2dm", "t2d", "diabetes mellitus type 2", "non-insulin dependent diabetes", "adult-onset diabetes", "2型糖尿病", "二型糖尿病", "成人発症型糖尿病"]
+      },
+      "cardiovascular": {
+        "aliases": ["cardiovascular", "heart disease", "cardiac", "atherosclerosis", "heart failure", "MACE", "心血管", "心臓病", "動脈硬化"]
+      },
+      "nash_nafld": {
+        "aliases": ["NASH", "NAFLD", "fatty liver", "nonalcoholic steatohepatitis", "nonalcoholic fatty liver", "脂肪肝", "非アルコール性脂肪肝"]
+      },
+      "chronic_kidney_disease": {
+        "aliases": ["chronic kidney disease", "CKD", "renal", "kidney disease", "慢性腎臓病", "腎臓病"]
+      }
+    },
+    "drug_classes": {
+      "glp1_agonist": {
+        "aliases": ["GLP-1", "GLP1", "glp-1 agonist", "glp-1 receptor agonist", "glp-1 ra", "glucagon-like peptide-1", "incretin", "GLP-1受容体作動薬", "インクレチン"]
+      },
+      "gip_glp1": {
+        "aliases": ["GIP/GLP-1", "dual agonist", "twincretin", "dual incretin", "GIP/GLP-1デュアルアゴニスト"]
+      },
+      "triple_agonist": {
+        "aliases": ["triple agonist", "GLP-1/GIP/glucagon", "triagonist", "トリプルアゴニスト"]
+      },
+      "amylin_analog": {
+        "aliases": ["amylin", "amylin analog", "pramlintide", "cagrilintide", "アミリン", "アミリンアナログ"]
+      }
+    },
+    "drug_names": {
+      "semaglutide": {
+        "aliases": ["semaglutide", "セマグルチド"],
+        "brands": ["Ozempic", "Wegovy", "Rybelsus", "オゼンピック", "ウゴービ", "リベルサス"]
+      },
+      "tirzepatide": {
+        "aliases": ["tirzepatide", "チルゼパチド"],
+        "brands": ["Mounjaro", "Zepbound", "マンジャロ", "ゼップバウンド"]
+      },
+      "liraglutide": {
+        "aliases": ["liraglutide", "リラグルチド"],
+        "brands": ["Victoza", "Saxenda", "ビクトーザ", "サクセンダ"]
+      },
+      "dulaglutide": {
+        "aliases": ["dulaglutide", "デュラグルチド"],
+        "brands": ["Trulicity", "トルリシティ"]
+      },
+      "exenatide": {
+        "aliases": ["exenatide", "エキセナチド"],
+        "brands": ["Byetta", "Bydureon", "バイエッタ", "ビデュリオン"]
+      },
+      "orforglipron": {
+        "aliases": ["orforglipron", "オルフォグリプロン"],
+        "brands": [],
+        "status": "investigational"
+      },
+      "cagrisema": {
+        "aliases": ["CagriSema", "cagrisema", "カグリセマ"],
+        "brands": [],
+        "status": "investigational"
+      },
+      "cagrilintide": {
+        "aliases": ["cagrilintide", "カグリリンチド"],
+        "brands": [],
+        "status": "investigational"
+      },
+      "amycretin": {
+        "aliases": ["amycretin", "アミクレチン"],
+        "brands": [],
+        "status": "investigational"
+      },
+      "retatrutide": {
+        "aliases": ["retatrutide", "レタトルチド"],
+        "brands": [],
+        "status": "investigational"
+      },
+      "survodutide": {
+        "aliases": ["survodutide", "スルボデュチド"],
+        "brands": [],
+        "status": "investigational"
+      }
+    },
+    "companies": {
+      "novo_nordisk": {
+        "aliases": ["Novo Nordisk", "Novo", "ノボノルディスク", "ノボ"]
+      },
+      "eli_lilly": {
+        "aliases": ["Eli Lilly", "Lilly", "イーライリリー", "リリー"]
+      },
+      "pfizer": {
+        "aliases": ["Pfizer", "ファイザー"]
+      },
+      "amgen": {
+        "aliases": ["Amgen", "アムジェン"]
+      },
+      "astrazeneca": {
+        "aliases": ["AstraZeneca", "アストラゼネカ"]
+      },
+      "boehringer": {
+        "aliases": ["Boehringer Ingelheim", "Boehringer", "ベーリンガー"]
+      }
+    },
+    "regulatory_terms": {
+      "aliases": ["FDA approval", "FDA approved", "NDA", "BLA", "sNDA", "filing", "submitted", "under review", "PDUFA", "priority review", "fast track", "breakthrough therapy", "accelerated approval", "承認", "申請", "審査中", "優先審査"]
+    }
+  },
+  "sources": [
+    {
+      "name": "FDA Press Announcements",
+      "url": "https://www.fda.gov/news-events/fda-newsroom/press-announcements",
+      "rss_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
+      "category": "government",
+      "subcategory": "press_announcements",
+      "source_type": "rss",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "name": "FDA Drug Safety & Availability",
+      "url": "https://www.fda.gov/drugs/drug-safety-and-availability",
+      "rss_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/drugs/rss.xml",
+      "category": "government",
+      "subcategory": "drug_safety",
+      "source_type": "rss",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "name": "MedWatch Safety Alerts",
+      "url": "https://www.fda.gov/safety/medwatch-fda-safety-information-and-adverse-event-reporting-program",
+      "rss_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/medwatch/rss.xml",
+      "category": "government",
+      "subcategory": "safety_alerts",
+      "source_type": "rss",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "name": "FDA Warning Letters",
+      "url": "https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters",
+      "category": "government",
+      "subcategory": "warning_letters",
+      "source_type": "web",
+      "priority": 1,
+      "enabled": true,
+      "selectors": {
+        "article": "table tbody tr",
+        "title": "td a",
+        "link": "td a",
+        "date": "td:first-child"
+      }
+    },
+    {
+      "name": "FDA Drug Shortages",
+      "url": "https://www.accessdata.fda.gov/scripts/drugshortages/default.cfm",
+      "category": "government",
+      "subcategory": "drug_shortages",
+      "source_type": "web",
+      "priority": 1,
+      "enabled": true,
+      "selectors": {
+        "article": "table tbody tr",
+        "title": "td a",
+        "link": "td a",
+        "date": ""
+      }
+    },
+    {
+      "name": "FDA Novel Drug Approvals",
+      "url": "https://www.fda.gov/drugs/novel-drug-approvals-fda/novel-drug-approvals-{year}",
+      "category": "government",
+      "subcategory": "novel_approvals",
+      "source_type": "web",
+      "priority": 1,
+      "enabled": true,
+      "dynamic_year": true,
+      "selectors": {
+        "article": "table tbody tr",
+        "title": "td:first-child",
+        "link": "td a",
+        "date": "td"
+      }
+    },
+    {
+      "name": "WHO News",
+      "url": "https://www.who.int/news",
+      "rss_url": "https://www.who.int/rss-feeds/news-english.xml",
+      "category": "government",
+      "subcategory": "international",
+      "source_type": "rss",
+      "priority": 2,
+      "enabled": true
+    },
+    {
+      "name": "CMS Innovation Models",
+      "url": "https://www.cms.gov/priorities/innovation/innovation-models",
+      "category": "government",
+      "subcategory": "cms",
+      "source_type": "web",
+      "priority": 2,
+      "enabled": true,
+      "selectors": {
+        "article": ".views-row, .card",
+        "title": "h3 a, .card-title a",
+        "link": "a",
+        "date": ".date, time"
+      }
+    },
+    {
+      "name": "Novo Nordisk News",
+      "url": "https://www.novonordisk.com/news-and-media/news-and-ir-materials.html",
+      "category": "pharma",
+      "source_type": "web",
+      "priority": 1,
+      "enabled": true,
+      "selectors": {
+        "article": ".news-item, .card, article",
+        "title": "h3, .card-title, .headline",
+        "link": "a",
+        "date": ".date, time, .meta-date"
+      }
+    },
+    {
+      "name": "Eli Lilly News",
+      "url": "https://www.lilly.com/news/press-releases",
+      "rss_url": "https://investor.lilly.com/rss/news-releases.xml",
+      "category": "pharma",
+      "source_type": "rss",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "name": "STAT News",
+      "url": "https://www.statnews.com",
+      "rss_url": "https://www.statnews.com/feed/",
+      "category": "industry_news",
+      "source_type": "rss",
+      "priority": 2,
+      "enabled": true
+    },
+    {
+      "name": "BioPharma Dive",
+      "url": "https://www.biopharmadive.com",
+      "rss_url": "https://www.biopharmadive.com/feeds/news/",
+      "category": "industry_news",
+      "source_type": "rss",
+      "priority": 2,
+      "enabled": true
+    },
+    {
+      "name": "Fierce Biotech",
+      "url": "https://www.fiercebiotech.com",
+      "rss_url": "https://www.fiercebiotech.com/rss/xml",
+      "category": "industry_news",
+      "source_type": "rss",
+      "priority": 2,
+      "enabled": true
+    },
+    {
+      "name": "Endpoints News",
+      "url": "https://endpts.com",
+      "rss_url": "https://endpts.com/feed/",
+      "category": "industry_news",
+      "source_type": "rss",
+      "priority": 2,
+      "enabled": true
+    },
+    {
+      "name": "Reuters Health",
+      "url": "https://www.reuters.com/business/healthcare-pharmaceuticals/",
+      "category": "industry_news",
+      "source_type": "web",
+      "priority": 2,
+      "enabled": false,
+      "note": "スクレイピング困難なため無効化"
+    },
+    {
+      "name": "NPR Health",
+      "url": "https://www.npr.org/sections/health/",
+      "rss_url": "https://feeds.npr.org/103537970/rss.xml",
+      "category": "general_news",
+      "source_type": "rss",
+      "priority": 3,
+      "enabled": true
+    },
+    {
+      "name": "Food Navigator USA",
+      "url": "https://www.foodnavigator-usa.com",
+      "rss_url": "https://www.foodnavigator-usa.com/arc/outboundfeeds/rss/",
+      "category": "food_industry",
+      "source_type": "rss",
+      "priority": 3,
+      "enabled": true
+    }
+  ],
+  "shortage_monitor": {
+    "enabled": true,
+    "show_zero_results": true,
+    "database_url": "https://www.accessdata.fda.gov/scripts/drugshortages/default.cfm",
+    "drugs_to_monitor": [
+      "semaglutide",
+      "tirzepatide",
+      "liraglutide",
+      "dulaglutide",
+      "exenatide"
+    ],
+    "brands_to_monitor": [
+      "Ozempic",
+      "Wegovy",
+      "Rybelsus",
+      "Mounjaro",
+      "Zepbound",
+      "Saxenda",
+      "Victoza",
+      "Trulicity",
+      "Byetta",
+      "Bydureon"
+    ]
+  },
+  "categories": {
+    "government": {
+      "display_name": "政府・公的機関",
+      "priority": 1,
+      "color": "#1a73e8"
+    },
+    "pharma": {
+      "display_name": "製薬会社",
+      "priority": 1,
+      "color": "#34a853"
+    },
+    "industry_news": {
+      "display_name": "業界ニュース",
+      "priority": 2,
+      "color": "#ea4335"
+    },
+    "academic": {
+      "display_name": "学術・医学",
+      "priority": 2,
+      "color": "#9334ea"
+    },
+    "general_news": {
+      "display_name": "一般メディア",
+      "priority": 3,
+      "color": "#666666"
+    },
+    "food_industry": {
+      "display_name": "食品業界",
+      "priority": 3,
+      "color": "#ff9800"
+    }
+  },
+  "fda_subcategories": {
+    "press_announcements": {
+      "display_name": "プレスリリース（承認・適応追加）",
+      "emoji": "📢"
+    },
+    "drug_safety": {
+      "display_name": "医薬品安全性情報",
+      "emoji": "⚠️"
+    },
+    "safety_alerts": {
+      "display_name": "安全性アラート (MedWatch)",
+      "emoji": "🚨"
+    },
+    "warning_letters": {
+      "display_name": "警告書",
+      "emoji": "📋"
+    },
+    "drug_shortages": {
+      "display_name": "供給不足情報",
+      "emoji": "📦"
+    },
+    "novel_approvals": {
+      "display_name": "新薬承認",
+      "emoji": "✅"
+    },
+    "international": {
+      "display_name": "国際機関",
+      "emoji": "🌍"
+    },
+    "cms": {
+      "display_name": "CMS/Medicare",
+      "emoji": "🏥"
+    }
+  },
+  "submission_status": {
+    "approved": {
+      "display_name": "承認済",
+      "emoji": "✅",
+      "codes": ["AP", "APPROVED"]
+    },
+    "tentative_approval": {
+      "display_name": "暫定承認",
+      "emoji": "☑️",
+      "codes": ["TA", "TENTATIVE"]
+    },
+    "filed": {
+      "display_name": "申請受理",
+      "emoji": "📄",
+      "codes": ["FILED", "ACCEPTED FOR FILING"]
+    },
+    "submitted": {
+      "display_name": "申請中",
+      "emoji": "📝",
+      "codes": ["SUBMITTED", "PENDING"]
+    },
+    "under_review": {
+      "display_name": "審査中",
+      "emoji": "🔍",
+      "codes": ["UNDER REVIEW", "REVIEW"]
+    },
+    "not_approved": {
+      "display_name": "非承認",
+      "emoji": "❌",
+      "codes": ["NA", "NOT APPROVED", "CRL"]
+    },
+    "withdrawn": {
+      "display_name": "撤回",
+      "emoji": "🔙",
+      "codes": ["WITHDRAWN", "WD"]
+    }
+  },
+  "relevance_weights": {
+    "indication": 3,
+    "drug_class": 3,
+    "drug_name": 4,
+    "brand_name": 4,
+    "company": 1,
+    "regulatory": 2
+  },
+  "output_settings": {
+    "default_format": "html",
+    "include_summary": true,
+    "include_search_terms": true,
+    "group_by_category": true,
+    "highlight_high_relevance": true,
+    "relevance_threshold": 3
+  }
+}
